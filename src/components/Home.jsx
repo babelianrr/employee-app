@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import axios from 'axios'
 import moment from 'moment'
@@ -35,14 +35,14 @@ const Home = () => {
     params: formik.values
   }
 
-  const getProfiles = async (configs) => {
+  const getProfiles = useCallback(async (configs) => {
     try {
       const response = await axios.get(API_URL + "admin/profiles", configs)
       setProfiles(response.data.data)
     } catch (error) {
       console.log(error)
     }
-  }
+  })
 
   const handleReset = () => {
     formik.resetForm()

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import moment from 'moment'
@@ -11,7 +11,7 @@ import { API_URL } from '../configs/api'
 
 const UserProfile = () => {
   const navigate = useNavigate()
-  const [Profile, setProfile] = useState(false)
+  const [Profile, setProfile] = useState(null)
   const [editing, setEditing] = useState(false)
   const auth = useAuth()
 
@@ -74,50 +74,43 @@ const UserProfile = () => {
             })
           }
         } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Terjadi error internal'
-          })
+          console.log(error)
         }
       })
     }
   })
 
-  const getProfile = async (configs) => {
+  const getProfile = useCallback(async (configs) => {
     try {
       const response = await axios.get(API_URL + "profile/" + auth.user.id, configs)
       const data = response.data.data
-      formik.setFieldValue('id', data.id,)
-      formik.setFieldValue('user_id', data.user_id,)
-      formik.setFieldValue('position', data.position,)
-      formik.setFieldValue('name', data.name,)
-      formik.setFieldValue('ktp', data.ktp,)
-      formik.setFieldValue('birthplace', data.birthplace,)
-      formik.setFieldValue('birthdate', data.birthdate,)
-      formik.setFieldValue('gender', data.gender,)
-      formik.setFieldValue('religion', data.religion,)
-      formik.setFieldValue('bloodtype', data.bloodtype,)
-      formik.setFieldValue('marriage', data.marriage,)
-      formik.setFieldValue('ktpaddress', data.ktpaddress,)
-      formik.setFieldValue('currentaddress', data.currentaddress,)
-      formik.setFieldValue('email', data.email,)
-      formik.setFieldValue('phone', data.phone,)
-      formik.setFieldValue('pic', data.pic,)
-      formik.setFieldValue('skill', data.skill,)
-      formik.setFieldValue('placement', data.placement,)
-      formik.setFieldValue('salary', data.salary,)
-      formik.setFieldValue('education', data.education,)
-      formik.setFieldValue('course', data.course,)
-      formik.setFieldValue('experience', data.experience)
-      setProfile(true)
+      formik.setFieldValue('id', data?.id,)
+      formik.setFieldValue('user_id', data?.user_id,)
+      formik.setFieldValue('position', data?.position,)
+      formik.setFieldValue('name', data?.name,)
+      formik.setFieldValue('ktp', data?.ktp,)
+      formik.setFieldValue('birthplace', data?.birthplace,)
+      formik.setFieldValue('birthdate', data?.birthdate,)
+      formik.setFieldValue('gender', data?.gender,)
+      formik.setFieldValue('religion', data?.religion,)
+      formik.setFieldValue('bloodtype', data?.bloodtype,)
+      formik.setFieldValue('marriage', data?.marriage,)
+      formik.setFieldValue('ktpaddress', data?.ktpaddress,)
+      formik.setFieldValue('currentaddress', data?.currentaddress,)
+      formik.setFieldValue('email', data?.email,)
+      formik.setFieldValue('phone', data?.phone,)
+      formik.setFieldValue('pic', data?.pic,)
+      formik.setFieldValue('skill', data?.skill,)
+      formik.setFieldValue('placement', data?.placement,)
+      formik.setFieldValue('salary', data?.salary,)
+      formik.setFieldValue('education', data?.education,)
+      formik.setFieldValue('course', data?.course,)
+      formik.setFieldValue('experience', data?.experience)
+      setProfile(data)
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: 'Terjadi error internal'
-      })
+      console.log(error)
     }
-  }
+  })
 
   const handleAddEducation = () => {
     formik.values.education.push({
@@ -206,6 +199,29 @@ const UserProfile = () => {
     formik.setFieldValue('experience', experience)
   }
 
+  const handleDelete = () => {
+    Swal.fire({
+      icon: 'question',
+      text: 'Apakah anda ingin menghapus profil?',
+      showCloseButton: true,
+      showConfirmButton: true,
+      confirmButtonText: 'Ya',
+      showDenyButton: true,
+      denyButtonText: 'Tidak'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await axios.delete(API_URL + "profile/" + formik.values.id, configs)
+        if (response.data.status) {
+          Swal.fire({
+            icon: 'success',
+            text: 'Berhasil menghapus profil'
+          })
+          getProfile(configs)
+        }
+      }
+    })
+  }
+
   const handleCancel = () => {
     Swal.fire({
       icon: 'question',
@@ -257,7 +273,8 @@ const UserProfile = () => {
                           ) : (
                             <div className="row mb-4">
                               <div className="col-6">
-                                <button className="btn btn-info" type="button" onClick={() => setEditing(true)}>Edit</button>
+                                <button className="btn btn-info mr-2" type="button" onClick={() => setEditing(true)}>Edit</button>
+                                <button className="btn btn-danger" type="button" onClick={handleDelete}>Hapus</button>
                               </div>
                             </div>
                           )

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import moment from 'moment'
@@ -85,7 +85,7 @@ const DetailProfile = () => {
     }
   })
 
-  const getProfile = async (configs) => {
+  const getProfile = useCallback(async (configs) => {
     try {
       const response = await axios.get(API_URL + "admin/profile/" + id, configs)
       const data = response.data.data
@@ -118,7 +118,7 @@ const DetailProfile = () => {
         text: 'Terjadi error internal'
       })
     }
-  }
+  })
 
   const handleAddEducation = () => {
     formik.values.education.push({

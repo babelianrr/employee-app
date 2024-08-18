@@ -69,7 +69,7 @@ const NewProfile = () => {
       }).then(async () => {
         try {
           const response = await axios.post(API_URL + "profile", values, configs)
-          if (response.response.data.status === 201) {
+          if (response.status === 201) {
             Swal.fire({
               icon: 'success',
               title: 'Sukses',

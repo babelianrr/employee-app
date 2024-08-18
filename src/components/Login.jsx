@@ -47,7 +47,7 @@ const Login = () => {
                         onChange={formik.handleChange}
                         value={formik.values.email}
                       />
-                      <span className='small text-danger'>{formik.errors.email}</span>
+                      {formik.errors.email && formik.touched.email && <span className='small text-danger'>{formik.errors.email}</span>}
                     </div>
                     <div className='form-group'>
                       <input
@@ -58,7 +58,7 @@ const Login = () => {
                         onChange={formik.handleChange}
                         value={formik.values.password}
                       />
-                      <span className='small text-danger'>{formik.errors.password}</span>
+                      {formik.errors.password && formik.touched.password && <span className='small text-danger'>{formik.errors.password}</span>}
                     </div>
                     <button type='submit' className='btn btn-primary btn-user btn-block' disabled={formik.isSubmitting}>
                       Masuk

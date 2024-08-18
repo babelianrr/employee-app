@@ -27,8 +27,8 @@ const Register = () => {
     onSubmit: async (values) => {
       if (values.email !== '' && values.password !== '') {
         try {
-          const response = await axios.post(API_URL + "/register", values, config)
-          if (response.response.data.status === 201) {
+          const response = await axios.post(API_URL + "register", values, config)
+          if (response.status === 201) {
             Swal.fire({
               icon: 'success',
               title: 'Sukses',
@@ -76,7 +76,7 @@ const Register = () => {
                         onChange={formik.handleChange}
                         value={formik.values.email}
                       />
-                      <span className='small text-danger'>{formik.errors.email}</span>
+                      {formik.errors.email && formik.touched.email && <span className='small text-danger'>{formik.errors.email}</span>}
                     </div>
                     <div className="form-group">
                       <input
@@ -87,9 +87,9 @@ const Register = () => {
                         onChange={formik.handleChange}
                         value={formik.values.password}
                       />
-                      <span className='small text-danger'>{formik.errors.password}</span>
+                      {formik.errors.password && formik.touched.password && <span className='small text-danger'>{formik.errors.password}</span>}
                     </div>
-                    <button type='submit' className="btn btn-primary btn-user btn-block">
+                    <button type='submit' className={`btn btn-primary btn-user btn-block ${formik.isSubmitting ? 'btn-disabled' : ''}`}>
                       Register
                     </button>
                   </form>
