@@ -563,12 +563,7 @@ const DetailProfile = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="row">
-                    <div className="col">
-                      <h4 className="h4 text-gray-800">Tidak ada profil</h4>
-                      <button className="btn btn-primary" onClick={() => navigate('/new-profile')}>Buat Profil</button>
-                    </div>
-                  </div>
+                  <></>
                 )
               }
             </div>

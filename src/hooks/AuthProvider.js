@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
       const response = await axios.post(API_URL+'login', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:3000'
         },
       })
       const res = response.data
