@@ -1,7 +1,9 @@
 import React from 'react'
 import profilePic from '../../assets/img/undraw_profile.svg'
+import { useAuth } from '../../hooks/AuthProvider'
 
-const Navbar = (auth) => {
+const Navbar = () => {
+  const auth = useAuth()
   return (
     <>
       <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">

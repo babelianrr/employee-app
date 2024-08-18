@@ -1,4 +1,5 @@
 import { useContext, createContext, useState } from 'react'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../configs/api'
 
@@ -10,18 +11,15 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
   const loginAction = async (data) => {
     try {
-      const response = await fetch(API_URL+'login', {
-        method: 'POST',
+      const response = await axios.post(API_URL+'login', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
       })
-      const res = await response.json()
+      const res = response.data
       if (res.data) {
         setUser(res.data.user)
         setToken(res.data.token)
-        localStorage.setItem('user', res.data.user)
         localStorage.setItem('token', res.data.token)
         if (res.data.user.role === 'ADMIN') {
           return navigate('/')

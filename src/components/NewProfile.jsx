@@ -68,7 +68,7 @@ const NewProfile = () => {
         denyButtonText: 'Tidak'
       }).then(async () => {
         try {
-          const response = await axios.post(API_URL + "/profile", values, configs)
+          const response = await axios.post(API_URL + "profile", values, configs)
           if (response.response.data.status === 201) {
             Swal.fire({
               icon: 'success',
@@ -202,9 +202,7 @@ const NewProfile = () => {
       <div className="container-fluid">
         <div id="content-wrapper" className="d-flex flex-column">
           <div id="content">
-            <Navbar 
-              auth={auth}
-            />
+            <Navbar />
             <div className="container-fluid">
               <div className="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 className="h3 mb-0 text-gray-800">Profil Baru</h1>
